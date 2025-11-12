@@ -1,0 +1,14 @@
+# Activer le moteur de réécriture d'URL
+RewriteEngine On
+
+# Le chemin de base doit correspondre au dossier du projet.
+RewriteBase /alpine-twig/public/
+
+# Ne pas réécrire si la requête est pour un fichier
+RewriteCond %{REQUEST_FILENAME} !-f
+
+# Ne pas réécrire si la requête est pour un dossier
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Rediriger tout le reste vers index.php
+RewriteRule ^(.*)$ index.php?url=$1 [L,QSA]

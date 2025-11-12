@@ -1,0 +1,21 @@
+
+    <main class="article-container">
+      <!-- Informations sur l'article -->
+      {% if article is null %}
+        <p>Article non trouvé</p>
+      {% else %}
+        <header>
+          <img src="{{ article.imageUrl }}" width="150" alt="" />
+          <h1>{{ article.titre }}</h1>
+          <p>{{ article.resume }}</p>
+          <p>
+            <i>{{ article.date }}</i>
+          </p>
+        </header>
+        
+        <!-- Corps de l'article -->
+        <article>
+          <p>{{ article.contenu }}</p>
+        </article>
+      {% endif %}
+    </main>

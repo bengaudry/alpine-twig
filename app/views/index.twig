@@ -1,0 +1,22 @@
+    <main>
+      <header>
+        <h1>Accueil</h1>
+      </header>
+      
+      <ul class="articles-container">
+        <!-- Affichage d'un lien pour chaque article -->
+        {% if articles is not empty %}
+          {% for article in articles %}
+            <li class="article-link">
+              <a href="{{ '/article?id=' ~ article['id'] }}">
+                <img src="{{ article["imageUrl"] }}" />
+                <p class="article-link-title">{{ article["titre"] }}</p>
+                <p class="article-link-subtitle">{{ article["resume"] }}</p>
+              </a>
+            </li>
+          {% endfor %}
+        {% else %}
+          <p>Pas d'articles</p>
+        {% endif %}
+      </ul>
+    </main>

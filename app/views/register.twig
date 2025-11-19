@@ -1,0 +1,37 @@
+	<main>
+	  <div class="form-container">
+	  	<h2 class="titre_spe">Formulaire d'inscription</h2>
+	  	<form>
+	  	  <!-- Champ de texte -->
+	  	  <div class="mb-3">
+	  	  	<label for="nom" class="form-label">Nom Complet</label>
+	  	  	<input type="text" class="form-control" id="nom" placeholder="Entrez votre nom complet">
+	  	  </div>
+	  	  <div class="mb-3">
+	  	  	<label for="mail" class="form-label">Adresse e-mail</label>
+	  	  	<input type="text" class="form-control" id="mail" placeholder="exemple@domaine.com">
+	  	  </div>
+
+	  	  <div class="mb-3">
+	  	  	<label for="password" class="form-label">Mot de passe</label>
+	  	  	<input type="password" class="form-control" id="password" placeholder="**********">
+	  	  </div>
+	  	  <div class="mb-3">
+	  	  	<label for="password-confirm" class="form-label">Confirmer le mot de passe</label>
+	  	  	<input type="password" class="form-control" id="password-confirm" placeholder="**********">
+	  	  </div>
+
+		  <!-- Case à cocher -->
+		  <div class="mb-3 form-check">
+		  	<input type="checkbox" class="form-check-input" id="exampleCheck1">
+		  	<label class="form-check-label" for="exampleCheck1">J'accepte les conditions d'utilisation.</label>
+		  </div>
+
+		  <!-- Bouton de soumission -->
+		  <button type="submit" class="btn btn-secondary">Réinitialiser</button>
+		  <button type="submit" class="btn btn-success" style="float: right;">Envoyer</button>
+
+		  <p class="mt-3">Déjà inscrit ? <a href="/signin">Se connecter</a></p>
+	  	</form>
+	  </div>
+	</main>

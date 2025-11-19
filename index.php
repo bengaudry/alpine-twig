@@ -1,8 +1,11 @@
 <?php 
 
 require_once 'lib/twig.php';
+
 require_once 'app/controllers/IndexController.php';
 require_once 'app/controllers/ArticlesController.php';
+require_once 'app/controllers/RegisterController.php';
+require_once 'app/controllers/SigninController.php';
 require_once 'app/controllers/NotFoundController.php';
 
 $path = strtok($_SERVER['REQUEST_URI'], '?');
@@ -17,6 +20,16 @@ switch ($path) {
     case '/article':
         $controller = new ArticlesController();
         $title = "Article";
+        break;
+
+    case '/register':
+        $controller = new RegisterController();
+        $title = "Inscription";
+        break;
+
+    case '/signin':
+        $controller = new SigninController();
+        $title = "Inscription";
         break;
 
     default:

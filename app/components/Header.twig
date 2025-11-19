@@ -2,42 +2,41 @@
 <html
   lang="fr"
   x-data="{
-    theme: getTheme(),
-    toggleTheme() {
-      const newTheme = toggleStorageTheme();
-      this.theme = newTheme;
-    }
-  }"
+		theme: getTheme(),
+		toggleTheme() {
+		  const newTheme = toggleStorageTheme();
+		  this.theme = newTheme;
+		}
+	}"
 >
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="app/css/style.css" />
-    <title>Blog - {{ title }}</title>
-  </head>
+	<head>
+		<meta charset="UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<link rel="stylesheet" href="app/css/style.css"/>
+    <link rel="stylesheet" href="app/css/bootstrap.min.css">
+		<title>Blog -
+			{{ title }}</title>
+	</head>
 
-  <body x-bind:class="theme">
-    <!-- Barre de navigation -->
-    <nav>
-      <div class="nav-title">
-        <img src="https://img.icons8.com/?size=100&id=cjsh58euBD9i&format=png&color=000000" height="32" alt="">
-        <p>BLOG</p>
-      </div>
+	<body
+		x-bind:class="theme">
+		<!-- Barre de navigation -->
+		<nav>
+			<div class="nav-title">
+				<img src="https://img.icons8.com/?size=100&id=cjsh58euBD9i&format=png&color=000000" height="32" alt="">
+				<p>BLOG</p>
+			</div>
 
-      <div class="nav-links">
-        <a href="/" aria-current="{{ path == "/" ? "true" : "false" }}">Accueil</a>
-      </div>
+			<div class="nav-links">
+				<a href="/" aria-current="{{ path == "/" ? "true" : "false" }}">Accueil</a>
+			</div>
 
-      <div class="theme-toggle-container">
-        <span>Sombre</span>
-        <input type="checkbox" id="theme-toggle" x-on:change="toggleTheme()" />
-        <label
-          class="theme-toggle"
-          for="theme-toggle"
-          x-bind:aria-checked="theme === 'dark' ? true : false"
-        >
-          <span></span>
-        </label>
-      </div>
-    </nav>
+			<div class="theme-toggle-container">
+				<span>Sombre</span>
+				<input type="checkbox" id="theme-toggle" x-on:change="toggleTheme()"/>
+				<label class="theme-toggle" for="theme-toggle" x-bind:aria-checked="theme === 'dark' ? true : false">
+					<span></span>
+				</label>
+			</div>
+		</nav>
 

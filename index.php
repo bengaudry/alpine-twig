@@ -1,10 +1,5 @@
 <?php 
 
-// require_once "./twig.php";
-// require_once "app/models/articles.php";
-
-// echo $twig->render("index.twig", getArticles());
-
 require_once 'lib/twig.php';
 require_once 'app/controllers/IndexController.php';
 require_once 'app/controllers/ContactController.php';

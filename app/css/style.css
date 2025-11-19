@@ -125,6 +125,8 @@ body.dark .theme-toggle {
   background-color: #595959;
 }
 
+
+
 .theme-toggle:hover > span {
   scale: 0.9;
 }
@@ -188,3 +190,14 @@ body.dark .theme-toggle {
   max-width: 500px;
   margin: 0 auto;
 }
+
+
+.navbar-custom-light {
+  background-color: rgb(232, 232, 236) !important; 
+  color: #000 !important;
+}
+.navbar-custom-dark {
+  background-color: #2b2a2a !important; 
+  color: #fff !important;
+}
+

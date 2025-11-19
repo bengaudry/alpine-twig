@@ -38,18 +38,22 @@
         <!-- Contenu de la barre de navigation -->
         <div class="collapse navbar-collapse" id="navbarNav">
           <!-- Liste des éléments de navigation -->
+
           <ul class="navbar-nav">
           <!-- Élément de navigation actif -->
           <li class="nav-item active">
           <a class="nav-link" href="/" aria-current="{{ path == "/" ? "true" : "false" }}">Accueil <span class="visually-hidden">(current)</span></a>
           </li>
+
           <!-- Autres éléments de navigation -->
           <li class="nav-item">
           <a class="nav-link" href="/signin" aria-current="{{ path == "/signin" ? "true" : "false" }}">Connexion</a>
           </li>
+
           <li class="nav-item">
           <a class="nav-link" href="/register" aria-current="{{ path == "/register" ? "true" : "false" }}">Inscription</a>
           </li>
+          
           </ul>
         </div>
     </nav>

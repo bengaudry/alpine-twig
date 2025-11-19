@@ -13,8 +13,8 @@ class ArticlesController {
     public function index() {
         global $twig;
 
-        if (isset($_GET["id"])) {
-            $article =  $this->articlesModel->getArticle($_GET["id"]);
+        if (isset($_GET["slug"])) {
+            $article =  $this->articlesModel->getArticle($_GET["slug"]);
             echo $twig->render(
                 "article.twig",
                 ["article" => $article]

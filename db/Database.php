@@ -7,7 +7,7 @@ class Database
 
     private function __construct()
     {
-        $dsn = 'mysql:host=localhost;dbname=alpine-twig-blog;charset=utf8mb4';
+        $dsn = 'mysql:host=localhost;dbname=blog_db;charset=utf8mb4';
         $user = 'root';
         $pass = '';
         $this->connection = new PDO($dsn, $user, $pass);

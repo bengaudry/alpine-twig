@@ -1,37 +1,126 @@
-	<main>
-	  <div class="form-container">
-	  	<h2 class="titre_spe">Formulaire d'inscription</h2>
-	  	<form>
-	  	  <!-- Champ de texte -->
-	  	  <div class="mb-3">
-	  	  	<label for="nom" class="form-label">Nom Complet</label>
-	  	  	<input type="text" class="form-control" id="nom" placeholder="Entrez votre nom complet">
-	  	  </div>
-	  	  <div class="mb-3">
-	  	  	<label for="mail" class="form-label">Adresse e-mail</label>
-	  	  	<input type="text" class="form-control" id="mail" placeholder="exemple@domaine.com">
-	  	  </div>
+<main>
+  <div class="form-container">
+  	<h2 class="titre_spe">Formulaire d'inscription</h2>
+  	<form action="" @submit.prevent="submit" x-data="registerForm()">
+	    
+      <!-- Name input -->
+  	  <div class="mb-3">
+  	  	<label for="nom" class="form-label">Nom Complet</label>
+  	  	<input
+		      type="text"
+          id="name"
+          x-model="name"
+          placeholder="Entrez votre nom complet"
+          class="form-control"
+          :class="{ 'is-invalid': errors.name }"
+        >
+		    <template x-if="errors.name">
+          <div class="invalid-feedback" x-text="errors.name" style="display: block;"></div>
+        </template>
+  	  </div>
 
-	  	  <div class="mb-3">
-	  	  	<label for="password" class="form-label">Mot de passe</label>
-	  	  	<input type="password" class="form-control" id="password" placeholder="**********">
-	  	  </div>
-	  	  <div class="mb-3">
-	  	  	<label for="password-confirm" class="form-label">Confirmer le mot de passe</label>
-	  	  	<input type="password" class="form-control" id="password-confirm" placeholder="**********">
-	  	  </div>
+	    <!-- Email input -->
+  	  <div class="mb-3">
+  	  	<label for="email" class="form-label">Adresse e-mail</label>
+  	  	<input
+          type="text"
+          id="email"
+          x-model="email"
+          placeholder="exemple@domaine.com"
+          class="form-control"
+          :class="{ 'is-invalid': errors.email }"
+        >
+		    <template x-if="errors.email">
+          <div class="invalid-feedback" x-text="errors.email" style="display: block;"></div>
+        </template>
+	    </div>
 
-		  <!-- Case à cocher -->
-		  <div class="mb-3 form-check">
-		  	<input type="checkbox" class="form-check-input" id="exampleCheck1">
-		  	<label class="form-check-label" for="exampleCheck1">J'accepte les conditions d'utilisation.</label>
-		  </div>
+      <!-- Password input -->
+  	  <div class="mb-3">
+  	  	<label for="password" class="form-label">Mot de passe</label>
+  	  	<input
+          type="password"
+          id="password"
+          x-model="password"
+          placeholder="**********"
+          class="form-control"
+          :class="{ 'is-invalid': errors.password }"
+        >
+		    <template x-if="errors.password">
+          <div class="invalid-feedback" x-text="errors.password" style="display: block;"></div>
+        </template>
+  	  </div>
 
-		  <!-- Bouton de soumission -->
-		  <button type="submit" class="btn btn-secondary">Réinitialiser</button>
-		  <button type="submit" class="btn btn-success" style="float: right;">Envoyer</button>
+      <!-- Confirm password input -->
+  	  <div class="mb-3">
+  	  	<label for="password-confirm" class="form-label">Confirmer le mot de passe</label>
+  	  	<input
+          type="password"
+          id="password-confirm"
+          x-model="passwordConfirmation"
+          placeholder="**********"
+          class="form-control"
+          :class="{ 'is-invalid': errors.passwordConfirmation }"
+        >
+		    <template x-if="errors.passwordConfirmation">
+          <div class="invalid-feedback" x-text="errors.passwordConfirmation" style="display: block;"></div>
+        </template>
+  	  </div>
 
-		  <p class="mt-3">Déjà inscrit ? <a href="/signin">Se connecter</a></p>
-	  	</form>
-	  </div>
-	</main>
+      <!-- Case à cocher -->
+      <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+        <label class="form-check-label" for="exampleCheck1">J'accepte les conditions d'utilisation.</label>
+      </div>
+
+      <!-- Bouton de soumission -->
+      <button type="reset" @click="reset()" class="btn btn-secondary">Réinitialiser</button>
+      <button type="submit" class="btn btn-success" style="float: right;">Envoyer</button>
+
+      <p class="mt-3">Déjà inscrit ? <a href="/signin">Se connecter</a></p>
+    </form>
+  </div>
+</main>
+
+<script>
+
+function registerForm() {
+  return {
+  	name: "",
+  	email: "",
+  	password: "",
+  	passwordConfirmation: "",
+
+  	errors: {},
+  	
+  	submit(e) {
+  	  this.errors = {};
+  	  this.successMessage = "";
+  	  if (!FormValidator.validateName(this.name)) {
+  	  	this.errors.name = "Le nom doit faire au moins 3 caractères";
+  	  }
+  	  if (!FormValidator.validateEmail(this.email)) {
+  	  	this.errors.email = "Adresse email invalide.";
+  	  }
+  	  if (!FormValidator.validatePassword(this.password)) {
+  	  	this.errors.password = "Le mot de passe doit faire au moins 8 caractères";
+  	  }
+  	  if (this.password !== this.passwordConfirmation) {
+  	  	this.errors.passwordConfirmation = "Les mots de passe sont différents";
+  	  }
+  	  if (Object.keys(this.errors).length === 0) {
+  	  	// Envoyer le formulaire
+        e.target.submit();
+  	  } else {
+  	  	console.log(this.errors);
+  	  }
+  	},
+
+    reset() {
+      this.errors = {};
+    }
+  }
+}
+
+</script>
+<script src="app/js/formValidator.js"></script>

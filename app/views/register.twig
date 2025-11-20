@@ -1,7 +1,14 @@
 <main>
   <div class="form-container">
   	<h2 class="titre_spe">Formulaire d'inscription</h2>
-  	<form action="" @submit.prevent="submit" x-data="registerForm()">
+
+    {% if error %}
+    <div class="alert alert-danger d-flex align-items-center" role="alert">
+      {{ error }}
+    </div>
+    {% endif %}
+
+  	<form action="" method="POST" @submit.prevent="submit" x-data="registerForm()">
 	    
       <!-- Name input -->
   	  <div class="mb-3">
@@ -9,6 +16,7 @@
   	  	<input
 		      type="text"
           id="name"
+          name="name"
           x-model="name"
           placeholder="Entrez votre nom complet"
           class="form-control"
@@ -25,6 +33,7 @@
   	  	<input
           type="text"
           id="email"
+          name="email"
           x-model="email"
           placeholder="exemple@domaine.com"
           class="form-control"
@@ -41,6 +50,7 @@
   	  	<input
           type="password"
           id="password"
+          name="password"
           x-model="password"
           placeholder="**********"
           class="form-control"
@@ -74,8 +84,18 @@
       </div>
 
       <!-- Bouton de soumission -->
-      <button type="reset" @click="reset()" class="btn btn-secondary">Réinitialiser</button>
-      <button type="submit" class="btn btn-success" style="float: right;">Envoyer</button>
+      <button type="reset" @click="reset()" :disabled="isSubmitting" class="btn btn-secondary">Réinitialiser</button>
+	    <button
+        type="submit"
+        :disabled="isSubmitting"
+        class="btn btn-success d-flex align-items-center"
+        style="float: right;"
+      >
+        <div class="spinner-border spinner-border-sm me-2 text-light" role="status" x-show="isSubmitting">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        Se connecter
+      </button>
 
       <p class="mt-3">Déjà inscrit ? <a href="/signin">Se connecter</a></p>
     </form>
@@ -92,8 +112,10 @@ function registerForm() {
   	passwordConfirmation: "",
 
   	errors: {},
+    isSubmitting: false,
   	
   	submit(e) {
+      this.isSubmitting = false;
   	  this.errors = {};
   	  this.successMessage = "";
   	  if (!FormValidator.validateName(this.name)) {
@@ -103,13 +125,14 @@ function registerForm() {
   	  	this.errors.email = "Adresse email invalide.";
   	  }
   	  if (!FormValidator.validatePassword(this.password)) {
-  	  	this.errors.password = "Le mot de passe doit faire au moins 8 caractères";
+  	  	this.errors.password = "Le mot de passe doit faire au moins 6 caractères";
   	  }
   	  if (this.password !== this.passwordConfirmation) {
   	  	this.errors.passwordConfirmation = "Les mots de passe sont différents";
   	  }
   	  if (Object.keys(this.errors).length === 0) {
   	  	// Envoyer le formulaire
+        this.isSubmitting = true;
         e.target.submit();
   	  } else {
   	  	console.log(this.errors);

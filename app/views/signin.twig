@@ -1,12 +1,20 @@
 <main>
   <div class="form-container">
   	<h2 class="titre_spe">Se connecter</h2>
-  	<form action="" @submit.prevent="submit" x-data="signInForm()">
+
+    {% if error %}
+    <div class="alert alert-danger d-flex align-items-center" role="alert">
+      {{ error }}
+    </div>
+    {% endif %}
+
+  	<form action="" method="POST" @submit.prevent="submit" x-data="signInForm()">
   	  <div class="mb-3">
   	  	<label for="email" class="form-label">Adresse e-mail</label>
   	  	<input
           type="text"
           id="email"
+          name="email"
           x-model="email"
           placeholder="exemple@domaine.com"
           class="form-control"
@@ -22,6 +30,7 @@
   	  	<input
           type="password"
           id="password"
+          name="password"
           x-model="password"
           placeholder="**********"
           class="form-control"
@@ -33,7 +42,17 @@
   	  </div>
 
 	    <!-- Bouton de soumission -->
-	    <button type="submit" class="btn btn-success" style="float: right;">Envoyer</button>
+	    <button
+        type="submit"
+        :disabled="isSubmitting"
+        class="btn btn-success d-flex align-items-center"
+        style="float: right;"
+      >
+        <div class="spinner-border spinner-border-sm me-2 text-light" role="status" x-show="isSubmitting">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        S'inscrire
+      </button>
 
 	    <p class="mt-3">Pas encore de compte ? <a href="/register">S'inscrire</a></p>
   	</form>
@@ -48,19 +67,21 @@ function signInForm() {
     password: "",
 
     errors: {},
-    successMessage: "",
+    isSubmitting: false,
     
     submit(e) {
+      this.isSubmitting = false;
       this.errors = {};
       this.successMessage = "";
       if (!FormValidator.validateEmail(this.email)) {
         this.errors.email = "Adresse email invalide.";
       }
       if (!FormValidator.validatePassword(this.password)) {
-        this.errors.password = "Le mot de passe est vide";
+        this.errors.password = "Le mot de passe doit faire au moins 6 caractères";
       }
       if (Object.keys(this.errors).length === 0) {
         // Envoyer le formulaire
+        this.isSubmitting = true;
         e.target.submit();
       } else {
         console.log(this.errors);

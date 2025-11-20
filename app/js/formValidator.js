@@ -13,6 +13,6 @@ class FormValidator {
   static validatePassword(password) {
     return password
       && typeof password === "string"
-      && password.length > 8;
+      && password.length > 6;
   }
 }

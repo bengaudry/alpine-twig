@@ -10,3 +10,11 @@
 [2025-11-20 12:30:28] Erreur PDO : SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'RETURNING id' at line 1
 [2025-11-20 12:37:02] Connexion réussie pour bengaudry
 [2025-11-20 12:37:41] Connexion réussie pour AdminVTT
+[2025-11-20 12:45:35] Connexion réussie pour AdminVTT
+[2025-11-20 12:46:21] Connexion réussie pour AdminVTT
+[2025-11-20 12:47:56] Connexion réussie pour AdminVTT
+[2025-11-20 12:48:07] Connexion réussie pour AdminVTT
+[2025-11-20 12:48:25] Connexion réussie pour AdminVTT
+[2025-11-20 12:50:01] Connexion réussie pour AdminVTT
+[2025-11-20 12:51:20] Erreur PDO : SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'admin@vtt.com' for key 'email'
+[2025-11-20 12:51:28] Erreur PDO : SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'admin@vtt.com' for key 'email'

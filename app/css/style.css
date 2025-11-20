@@ -123,8 +123,10 @@ body.dark .theme-toggle {
 }
 
 .article-link-title {
-  font-weight: 700;
-  font-size: 1.2rem;
+  font-weight: 600;
+  margin-top: .3rem;
+  line-height: 1.3rem;
+  font-size: 1.1rem;
 }
 
 .article-link img {

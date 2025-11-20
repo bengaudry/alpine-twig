@@ -7,7 +7,11 @@ class Logger
 
     private function __construct()
     {
-        $this->logFile = __DIR__ . "/app.log";
+        $this->logFile = strtoupper(substr(PHP_OS, 0, 3)) === 'WIN'
+            ? realpath(__DIR__ . "\..") . "\app.log"
+            : realpath(__DIR__ . "/..") . "/app.log";
+
+        error_log($this->logFile);
     }
 
     public static function getInstance()

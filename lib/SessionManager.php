@@ -30,9 +30,16 @@ class SessionManager
         return $_SESSION[$key] ?? null;
     }
 
+    public function isSignedIn(): bool
+    {        
+        return isset($_SESSION['user_id'])
+            && isset($_SESSION['username'])
+            && isset($_SESSION['email']);
+    }
+
     public function isAdmin(): bool
     {
-        return $_SESSION["role"] === "admin";
+        return isset($_SESSION["role"]) && $_SESSION["role"] === "admin";
     }
 
     public function destroy(): void

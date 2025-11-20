@@ -29,5 +29,6 @@ class ArticlesController {
     
     private function redirectError() {
         header("Location: /404");
+        exit;
     }
 }

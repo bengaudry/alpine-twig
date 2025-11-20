@@ -1,12 +1,20 @@
 <main>
   <div class="form-container">
   	<h2 class="titre_spe">Se connecter</h2>
-  	<form action="" @submit.prevent="submit" x-data="signInForm()">
+
+    {% if error %}
+    <div class="alert alert-danger d-flex align-items-center" role="alert">
+      {{ error }}
+    </div>
+    {% endif %}
+
+  	<form action="" method="POST" @submit.prevent="submit" x-data="signInForm()">
   	  <div class="mb-3">
   	  	<label for="email" class="form-label">Adresse e-mail</label>
   	  	<input
           type="text"
           id="email"
+          name="email"
           x-model="email"
           placeholder="exemple@domaine.com"
           class="form-control"
@@ -22,6 +30,7 @@
   	  	<input
           type="password"
           id="password"
+          name="password"
           x-model="password"
           placeholder="**********"
           class="form-control"
@@ -57,7 +66,7 @@ function signInForm() {
         this.errors.email = "Adresse email invalide.";
       }
       if (!FormValidator.validatePassword(this.password)) {
-        this.errors.password = "Le mot de passe est vide";
+        this.errors.password = "Le mot de passe doit faire au moins 6 caractères";
       }
       if (Object.keys(this.errors).length === 0) {
         // Envoyer le formulaire

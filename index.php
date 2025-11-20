@@ -47,11 +47,15 @@ switch ($path) {
 
 $session = SessionManager::getInstance();
 
+// Start output buffering to allow headers to be sent from controllers
+ob_start();
+
 echo $twig->render("Head.twig", ["title" => $title]);
-error_log($session->isSignedIn() ? "signed in" : "not signed in");
 echo $twig->render(
     "Navbar.twig", 
     ["path" => $path, "isSignedIn" => $session->isSignedIn()]
 );
 $controller->index();
 echo $twig->render("Footer.twig");
+
+ob_end_flush();

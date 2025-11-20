@@ -19,24 +19,6 @@ body.dark {
   color: #fff;
 }
 
-nav {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1rem 2rem;
-}
-
-body.light nav {
-  background-color: #f3f3f3;
-  box-shadow: 0 0 12px 6px #42424220;
-}
-
-body.dark nav {
-  background-color: #242424;
-  box-shadow: 0 12px 28px 12px #80808015;
-}
-
 header {
   margin-bottom: 1rem;
 }
@@ -52,36 +34,6 @@ main {
   width: 100%;
   max-width: 680px;
   margin: 0 auto;
-}
-
-.nav-title {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-weight: 600;
-}
-
-@media screen and (max-width: 480px) {
-  .nav-title {
-    display: none;
-  }
-}
-
-.nav-links {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 1rem;
-}
-
-.nav-links a {
-  color: inherit;
-  text-decoration: none;
-  transition: opacity 150ms ease-out;
-}
-
-.nav-links a:hover {
-  opacity: 0.8;
 }
 
 a[aria-current="true"] {
@@ -125,8 +77,6 @@ body.dark .theme-toggle {
   background-color: #595959;
 }
 
-
-
 .theme-toggle:hover > span {
   scale: 0.9;
 }
@@ -139,6 +89,7 @@ body.dark .theme-toggle {
   display: grid;
   gap: 1rem;
   grid-template-columns: repeat(2, 1fr);
+  padding-left: 0 !important;
 }
 
 @media screen and (min-width: 580px) {
@@ -190,7 +141,6 @@ body.dark .theme-toggle {
   max-width: 500px;
   margin: 0 auto;
 }
-
 
 .navbar-custom-light {
   background-color: rgb(232, 232, 236) !important; 

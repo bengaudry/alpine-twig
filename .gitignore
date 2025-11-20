@@ -1,3 +1,4 @@
 *.pdf
 vendor/
 composer.lock
+app.log

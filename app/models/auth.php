@@ -9,7 +9,8 @@ class Auth {
     /**
      * Sign in user
      */
-    public static function signIn(string $email, string $password) {
+    public static function signIn(string $email, string $password)
+    {
         $logger = Logger::getInstance();
         $db = Database::getInstance()->getConnection();
         $session = SessionManager::getInstance();
@@ -24,6 +25,7 @@ class Auth {
             if ($user && password_verify($password, $user['mot_de_passe'])) {
                 $session->set('user_id', $user['id']);
                 $session->set('username', $user['nom_utilisateur']);
+                $session->set('email', $user['email']);
                 $logger->log("Connexion réussie pour {$user['nom_utilisateur']}");
                 header('Location: /dashboard');
                 exit;
@@ -41,7 +43,8 @@ class Auth {
     /**
      * Create an account
      */
-    public static function register(string $name, string $email, string $password) {
+    public static function register(string $name, string $email, string $password)
+    {
         $logger = Logger::getInstance();
         $db = Database::getInstance()->getConnection();
         $session = SessionManager::getInstance();
@@ -104,7 +107,8 @@ class Auth {
     }
 
 
-    private static function redirectWithError(string $url, string $message) {
+    private static function redirectWithError(string $url, string $message)
+    {
         $redirect_url = $url . '?error=' . urlencode($message);
         header('Location: ' . $redirect_url);
         exit;

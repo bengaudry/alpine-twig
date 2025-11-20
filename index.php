@@ -38,6 +38,7 @@ switch ($path) {
         break;
 }
 
-echo $twig->render("Header.twig", ["path" => $path, "title" => $title]);
+echo $twig->render("Head.twig", ["title" => $title]);
+echo $twig->render("Navbar.twig", ["path" => $path]);
 $controller->index();
 echo $twig->render("Footer.twig");

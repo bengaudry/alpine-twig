@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html
+  lang="fr"
+  x-data="{
+    theme: getTheme(),
+    toggleTheme() {
+      const newTheme = toggleStorageTheme();
+      this.theme = newTheme;
+    }
+  }"
+>
+
+<head>
+  <meta charset="utf-8">
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="app/css/style.css" />
+  <title>Blog - {{ title }}</title>
+  <!-- Chargement de Bootstrap 5 -->
+  <link href="app/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Définition de la taille de l'écran pour l'affichage mobile -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+
+<body x-bind:class="theme">

@@ -27,7 +27,8 @@ class ProfileController {
             "profile.twig",
             [
                 "username" => $session->get("username"),
-                "email" => $session->get("email")
+                "email" => $session->get("email"),
+                "isadmin" => $session->isAdmin()
             ]
         );
     }

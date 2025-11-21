@@ -1,0 +1,60 @@
+<main class="dashboard-container nopadding nomw">
+
+  <nav class="dashboard-nav">
+    {% for page_key, page_title in pages %}
+    <a
+      href="/dashboard?view={{ page_key }}"
+      class="dashboard-nav-link {{ page_key == view ? 'active' : '' }}"
+    >
+      {{ page_title }}
+    </a>
+    {% endfor %}
+  </nav>
+
+  <article class="dashboard-content">
+    {% include 'dashboard/' ~ view ~ '.twig' %}
+  </article>
+
+</main>
+
+
+<style>
+
+.dashboard-container {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.dashboard-nav {
+  height: 100%;
+  width: fit-content;
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  padding: 2rem;
+  border-right: 1px solid #888;
+}
+
+.dashboard-nav-link {
+  width: 100%;
+  white-space: nowrap;
+  margin-right: 2rem;
+}
+
+.dashboard-content {
+  padding: 2rem;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  flex-grow: 1;
+}
+
+</style>

@@ -1,5 +1,7 @@
 {
     "require": {
-        "twig/twig": "3.14"
+        "twig/twig": "3.14",
+        "twig/markdown-extra": "^3.22",
+        "league/commonmark": "^2.7"
     }
 }

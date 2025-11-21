@@ -2,6 +2,12 @@
   <h1>{{ username }}</h1>
   <p>{{ email }}</p>
   <form action="" method="GET">
+    {% if isadmin %}
+    <a class="btn btn-primary" href="/dashboard">
+      Dashboard administrateur  
+    </a>
+    {% endif %}
+
     <button type="submit" name="signout" class="btn btn-danger">
       Se déconnecter
     </button>

@@ -8,6 +8,7 @@ require_once 'app/controllers/ArticlesController.php';
 require_once 'app/controllers/RegisterController.php';
 require_once 'app/controllers/SigninController.php';
 require_once 'app/controllers/ProfileController.php';
+require_once 'app/controllers/DashboardController.php';
 require_once 'app/controllers/NotFoundController.php';
 
 $path = strtok($_SERVER['REQUEST_URI'], '?');
@@ -37,6 +38,11 @@ switch ($path) {
     case '/profile':
         $controller = new ProfileController();
         $title = "Profil";
+        break;
+
+    case '/dashboard':
+        $controller = new DashboardController();
+        $title = "Tableau de bord";
         break;
 
     default:

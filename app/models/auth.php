@@ -27,7 +27,7 @@ class Auth {
                 $session->set('username', $user['nom_utilisateur']);
                 $session->set('email', $user['email']);
                 $logger->log("Connexion réussie pour {$user['nom_utilisateur']}");
-                header('Location: /dashboard');
+                header('Location: /profile');
                 exit;
             } else {
                 $logger->log("Échec de connexion pour $email");
@@ -98,7 +98,7 @@ class Auth {
             $session->set('username', $name);
             $session->set('email', $email);
             $logger->log("Connexion réussie pour {$name}");
-            header('Location: /dashboard');
+            header('Location: /profile');
             exit;
         } catch (PDOException $e) {
             $logger->log("Erreur PDO : " . $e->getMessage());

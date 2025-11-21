@@ -188,8 +188,7 @@ INSERT INTO `Tags` (`id`, `nom_tag`, `slug`) VALUES
 
 -- Articles (VTT)
 INSERT INTO `Articles` (`id`, `utilisateur_id`, `titre`, `slug`, `contenu`, `statut`) VALUES
-(1, 1, 'Top 5 des Traces VTT Enduro en Rhône-Alpes', 'top-5-traces-vtt-enduro-rhone-alpes', '#
-Introduction
+(1, 1, 'Top 5 des Traces VTT Enduro en Rhône-Alpes', 'top-5-traces-vtt-enduro-rhone-alpes', '# Introduction
 Découvrez les descentes les plus mythiques pour les amateurs d\'**Enduro** en France. Freins
 puissants et protections obligatoires !
 ## La piste de l\'Écureuil

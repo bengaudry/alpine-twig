@@ -7,6 +7,7 @@
     <header class="article-reader-header">
       <img src="{{ article.image_une|default('https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg?s=612x612&w=0&k=20&c=rnCKVbdxqkjlcs3xH87-9gocETqpspHFXu5dIGB4wuM=') }}" height="200" alt="" />
       <h1>{{ article.titre }}</h1>
+      <h5 class="text-body-secondary">@{{ article.nom_utilisateur }}</h5>
       <p>
         <i>{{ article.date_creation|date("d/m/Y") }}</i>
       </p>
@@ -14,9 +15,7 @@
     
     <!-- Corps de l'article -->
     <article>
-      {% apply markdown_to_html %}
-      {{ article.contenu }}</p>
-      {% endapply %}
+      {{ article.contenu|markdown_to_html }}</p>
     </article>
   {% endif %}
 </main>

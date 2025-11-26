@@ -1,1 +1,24 @@
 <h1>{{ pages['articles'] }}</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Titre</th>
+      <th scope="col">Slug</th>
+      <th scope="col">Date création</th>
+      <th scope="col">Auteur</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for article in data.articles %}
+    <tr>
+      <th scope="row">{{article.id}}</th>
+      <td>{{article.titre}}</td>
+      <td>{{article.slug}}</td>
+      <td>{{article.date_creation}}</td>
+      <td>{{article.nom_utilisateur}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>

@@ -4,11 +4,6 @@ require_once "app/models/articles.php";
 require_once "lib/twig.php";
 
 class ArticlesController {
-    private $articlesModel;
-
-    public function __construct() {
-        $this->articlesModel = new Articles();
-    }
 
     public function index() {
         global $twig;
@@ -17,7 +12,7 @@ class ArticlesController {
             return $this->redirectError();
         }
 
-        $article =  $this->articlesModel->getArticle($_GET["slug"]);
+        $article = Articles::getArticle($_GET["slug"]);
 
         if ($article == null) $this->redirectError();
 

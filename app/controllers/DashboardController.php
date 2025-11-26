@@ -3,6 +3,9 @@
 require_once 'lib/twig.php';
 require_once 'lib/SessionManager.php';
 
+require_once 'app/models/users.php';
+require_once 'app/models/articles.php';
+
 class DashboardController {
     private static $dashboardPages = [
         'stats' => 'Statistiques',
@@ -37,14 +40,31 @@ class DashboardController {
             exit;
         }
 
+        $data = $this->fetchData($_GET['view']);
+        error_log(json_encode($data));
+
         echo $twig->render(
             "dashboard.twig",
             [
                 "view" => $_GET['view'],
                 "pages" => DashboardController::$dashboardPages,
                 "username" => $session->get("username"),
-                "email" => $session->get("email")
+                "email" => $session->get("email"),
+                "data" => $data
             ]
         );
+    }
+
+    private function fetchData(string $view) {
+        switch ($view) {
+            case 'users':
+                return ['users' => Users::getAll()];
+
+            case 'articles':
+                return Articles::getArticles();
+                
+            default:
+                return [];
+        }
     }
 }

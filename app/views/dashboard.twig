@@ -1,6 +1,6 @@
 <main class="dashboard-container nopadding nomw">
 
-  <nav class="dashboard-nav">
+  <nav class="dashboard-nav border-end bg-secondary-subtle">
     {% for page_key, page_title in pages %}
     <a
       href="/dashboard?view={{ page_key }}"
@@ -40,7 +40,6 @@
   align-items: flex-start;
 
   padding: 2rem;
-  border-right: 1px solid #888;
 }
 
 .dashboard-nav-link {

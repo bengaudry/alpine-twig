@@ -7,13 +7,14 @@
       <div class="articles-container grid">
       <!-- Affichage d'un lien pour chaque article -->
         {% for article in articles %}
-          <a class="card" href="{{ '/article?slug=' ~ article['slug'] }}" style="width: 100%; display: block; text-decoration: none;">
+          <a class="card article-link" href="{{ '/article?slug=' ~ article['slug'] }}" style="width: 100%; display: block; text-decoration: none;">
             <img
               class="card-img-top"
               src="{{ article.image_une|default('https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg?s=612x612&w=0&k=20&c=rnCKVbdxqkjlcs3xH87-9gocETqpspHFXu5dIGB4wuM=') }}"
             />
             <div class="card-body">
-              <h5 class="card-title">{{ article["titre"] }}</h5>
+              <h5 class="card-title">{{ article['titre'] }}</h5>
+              <h6 class="card-subtitle text-body-secondary">@{{ article['nom_utilisateur'] }}</h6>
             </div>
           </a>
         {% endfor %}

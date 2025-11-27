@@ -16,7 +16,42 @@ class DashboardController {
 
     public function index() {
         global $twig;
+        
+        $this->redirectIfUnauthorized();
+        
+        $session = SessionManager::getInstance();
+        $view = $_GET['view'];
 
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            if (isset($_POST["articles:delete"])) {
+                Articles::deleteArticle($_POST['articles:delete']);
+                $view = "articles";
+            }
+            if (isset($_POST["articles:archive"])) {
+                Articles::archiveArticle($_POST['articles:archive']);
+                $view = "articles";
+            }
+            if (isset($_POST["articles:publish"])) {
+                Articles::publishArticle($_POST['articles:publish']);
+                $view = "articles";
+            }
+        }
+
+        $data = $this->fetchData($view);
+
+        echo $twig->render(
+            "dashboard.twig",
+            [
+                "view" => $view,
+                "pages" => DashboardController::$dashboardPages,
+                "username" => $session->get("username"),
+                "email" => $session->get("email"),
+                "data" => $data
+            ]
+        );
+    }
+
+    private function redirectIfUnauthorized() {
         $session = SessionManager::getInstance();
         
         // Rediriger vers la page de connexion si l'utilisateur n'est pas connecté
@@ -39,20 +74,6 @@ class DashboardController {
             header('Location: /dashboard?view=stats');
             exit;
         }
-
-        $data = $this->fetchData($_GET['view']);
-        error_log(json_encode($data));
-
-        echo $twig->render(
-            "dashboard.twig",
-            [
-                "view" => $_GET['view'],
-                "pages" => DashboardController::$dashboardPages,
-                "username" => $session->get("username"),
-                "email" => $session->get("email"),
-                "data" => $data
-            ]
-        );
     }
 
     private function fetchData(string $view) {
@@ -61,7 +82,7 @@ class DashboardController {
                 return ['users' => Users::getAll()];
 
             case 'articles':
-                return Articles::getArticles();
+                return Articles::getAllArticles();
                 
             default:
                 return [];

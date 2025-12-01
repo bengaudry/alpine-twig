@@ -7,7 +7,7 @@ class IndexController {
     public function index() {
         global $twig;
         
-        $articles = Articles::getArticles();
+        $articles = Articles::getPublishedArticles();
         echo $twig->render("index.twig", $articles);
     }
 }

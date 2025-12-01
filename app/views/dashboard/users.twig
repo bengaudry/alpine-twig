@@ -1,24 +1,35 @@
 <h1>{{ pages['users'] }}</h1>
 
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Nom d'utilisateur</th>
-      <th scope="col">Email</th>
-      <th scope="col">Date inscription</th>
-      <th scope="col">Rôles</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for user in data['users'] %}
-    <tr>
-      <th scope="row">{{user.id}}</th>
-      <td>{{user.nom_utilisateur}}</td>
-      <td>{{user.email}}</td>
-      <td>{{user.date_inscription}}</td>
-      <td>{{user.roles}}</td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+<form action="" method="POST">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Nom d'utilisateur</th>
+        <th scope="col">Email</th>
+        <th scope="col">Date inscription</th>
+        <th scope="col">Rôles</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user in data['users'] %}
+      <tr>
+        <th scope="row">{{user.id}}</th>
+        <td>{{user.nom_utilisateur}}</td>
+        <td>{{user.email}}</td>
+        <td>{{user.date_inscription}}</td>
+        <td>{{user.roles}}</td>
+        <td>
+          <button name="users:toggle-activation" value="{{ user.id }}" class="btn {{
+            user.est_actif == 1 ? 'btn-outline-danger'
+            : 'btn-outline-success'}}"
+          >
+            {{user.est_actif ? 'Désactiver' : 'Activer'}}
+          </button>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</form>

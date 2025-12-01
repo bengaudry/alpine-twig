@@ -39,7 +39,7 @@ class SessionManager
 
     public function isAdmin(): bool
     {
-        return true;
+        return Users::isAdmin($_SESSION['user_id']);
     }
 
     public function destroy(): void

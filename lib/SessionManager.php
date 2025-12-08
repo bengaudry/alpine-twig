@@ -1,5 +1,7 @@
 <?php
 
+require_once 'app/models/Roles.php';
+
 class SessionManager
 {
     private static ?SessionManager $instance = null;
@@ -39,7 +41,7 @@ class SessionManager
 
     public function isAdmin(): bool
     {
-        return Users::isAdmin($_SESSION['user_id']);
+        return Roles::isAdmin($_SESSION['user_id']);
     }
 
     public function destroy(): void

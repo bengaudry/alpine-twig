@@ -1,6 +1,6 @@
 <?php 
 
-require_once "app/models/articles.php";
+require_once "app/models/Articles.php";
 require_once "lib/twig.php";
 
 class IndexController {

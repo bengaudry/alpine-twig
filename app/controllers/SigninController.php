@@ -2,7 +2,7 @@
 
 require_once 'lib/twig.php';
 require_once 'lib/SessionManager.php';
-require_once 'app/models/auth.php';
+require_once 'app/models/Auth.php';
 
 class SigninController {
     public function index() {

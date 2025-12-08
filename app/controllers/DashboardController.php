@@ -3,8 +3,8 @@
 require_once 'lib/twig.php';
 require_once 'lib/SessionManager.php';
 
-require_once 'app/models/users.php';
-require_once 'app/models/articles.php';
+require_once 'app/models/Users.php';
+require_once 'app/models/Articles.php';
 
 class DashboardController {
     private static $dashboardPages = [
@@ -38,6 +38,13 @@ class DashboardController {
 
             if (isset($_POST["users:toggle-activation"])) {
                 Users::toggleActivation($_POST['users:toggle-activation']);
+                $view = "users";
+            }
+            if (isset($_POST["users:toggle-role_roleid"])) {
+                Roles::toggleUserRole(
+                    $_POST['users:user-id'],
+                    $_POST['users:toggle-role_roleid']
+                );
                 $view = "users";
             }
         }
@@ -84,7 +91,7 @@ class DashboardController {
     private function fetchData(string $view) {
         switch ($view) {
             case 'users':
-                return ['users' => Users::getAll()];
+                return ['users' => Users::getAll(), 'roles' => Roles::getAll()];
 
             case 'articles':
                 return Articles::getAllArticles();

@@ -3,3 +3,4 @@ vendor/
 composer.lock
 app.log
 cache/
+.idea/

@@ -20,42 +20,16 @@ class Users {
                     U.date_inscription,
                     GROUP_CONCAT(R.nom_role SEPARATOR ', ') as roles
                 FROM utilisateurs U
-                INNER JOIN role_user RU ON RU.user_id = U.id
-                INNER JOIN roles R ON R.id = RU.role_id
+                LEFT JOIN role_user RU ON RU.user_id = U.id
+                LEFT JOIN roles R ON R.id = RU.role_id
                 GROUP BY U.id, U.nom_utilisateur, U.email, U.est_actif, U.date_inscription
                 ORDER BY U.date_inscription DESC
             SQL);
             $stmt->execute();
-            $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            
-            return $users;
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             error_log($e);
             return null;
-        }
-    }
-    
-    public static function isAdmin(string $userId): bool {
-        if (!isset($userId)) return false;
-        try {
-            $db = Database::getInstance()->getConnection();
-            $stmt = $db->prepare(<<<SQL
-                SELECT 
-                    RU.role_id
-                FROM utilisateurs U
-                INNER JOIN role_user RU ON RU.user_id = U.id
-                WHERE U.id = :id
-            SQL);
-            $stmt->bindParam(":id", $userId);
-            $stmt->execute();
-            $data = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            return is_array($data['role_id'])
-                ? in_array(1, $data['role_id'])
-                : $data['role_id'] == 1;
-        } catch (PDOException $e) {
-            error_log($e);
-            return false;
         }
     }
 

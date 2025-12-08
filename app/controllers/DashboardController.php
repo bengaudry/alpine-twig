@@ -35,6 +35,11 @@ class DashboardController {
                 Articles::publishArticle($_POST['articles:publish']);
                 $view = "articles";
             }
+
+            if (isset($_POST["users:toggle-activation"])) {
+                Users::toggleActivation($_POST['users:toggle-activation']);
+                $view = "users";
+            }
         }
 
         $data = $this->fetchData($view);

@@ -7,7 +7,7 @@ require_once 'db/Database.php';
 class Auth {
 
     /**
-     * Sign in user
+     * Procédure de connexion d'un utilisateur
      */
     public static function signIn(string $email, string $password)
     {
@@ -21,12 +21,19 @@ class Auth {
             $stmt->execute([$email]);
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
+            // Rediriger si le compte de l'utilisateur à été désactivé
+            if (!$user['est_actif']) {
+                Auth::redirectWithError("/signin", "Compte désactivé");
+            };
+
             // Vérification du mot de passe
             if ($user && password_verify($password, $user['mot_de_passe'])) {
                 $session->set('user_id', $user['id']);
                 $session->set('username', $user['nom_utilisateur']);
                 $session->set('email', $user['email']);
+
                 $logger->log("Connexion réussie pour {$user['nom_utilisateur']}");
+
                 header('Location: /profile');
                 exit;
             } else {
@@ -41,7 +48,7 @@ class Auth {
 
 
     /**
-     * Create an account
+     * Crée un compte utilisateur
      */
     public static function register(string $name, string $email, string $password)
     {
@@ -97,7 +104,7 @@ class Auth {
             $session->set('user_id', $user['id']);
             $session->set('username', $name);
             $session->set('email', $email);
-            $logger->log("Connexion réussie pour {$name}");
+            $logger->log("Inscription réussie pour {$name} ({$email})");
             header('Location: /profile');
             exit;
         } catch (PDOException $e) {
@@ -107,9 +114,13 @@ class Auth {
     }
 
 
+    /**
+     * Redirige vers l'url en paramètre avec une erreur en GET
+     */
     private static function redirectWithError(string $url, string $message)
     {
         $redirect_url = $url . '?error=' . urlencode($message);
+        Logger::getInstance()->log("Redirection vers " . $redirect_url . " avec l'erreur : " . $message);
         header('Location: ' . $redirect_url);
         exit;
     }

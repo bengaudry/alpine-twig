@@ -134,7 +134,7 @@ CREATE TABLE `Commentaires` (
 -- Utilisateurs (Mot de passe 'password' hashé avec bcrypt pour l'exemple)
 -- Le hash réel dépendra de votre implémentation PHP.
 -- Ceci est un hash de démonstration pour 'test'
-SET @HASHED_PASSWORD = '$2y$10$Q7iR7/h7Gq6yRzW2gP0pT.0.1oQ5t4T8W0y5fG8E7C8zM7/V2C9a'; -- Hash pour le mot de passe 'vttadmin'
+SET @HASHED_PASSWORD = '$2y$10$MvnduIr8yFXuFp3H5k.uLOKYBKwxeENK6xGlwvR01DuxyqxapvCQO'; -- Hash pour le mot de passe 'vttadmin'
 
 INSERT INTO `Utilisateurs` (`id`, `nom_utilisateur`, `email`, `mot_de_passe`) VALUES
 (1, 'AdminVTT', 'admin@vtt.com', @HASHED_PASSWORD),

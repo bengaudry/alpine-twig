@@ -2,6 +2,7 @@
 
 require_once 'lib/twig.php';
 require_once 'lib/SessionManager.php';
+require_once 'app/models/Permissions.php';
 
 class ProfileController {
 
@@ -28,7 +29,7 @@ class ProfileController {
             [
                 "username" => $session->get("username"),
                 "email" => $session->get("email"),
-                "isadmin" => $session->isAdmin()
+                "isadmin" => Permissions::hasAdminAccess($session->get('user_id'))
             ]
         );
     }

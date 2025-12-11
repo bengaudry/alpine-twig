@@ -1,15 +1,16 @@
 <?php 
 
-require_once "app/models/articles.php";
+require_once "app/models/Articles.php";
 require_once "lib/twig.php";
 
 class ArticlesController {
 
-    public function index() {
+    public function index(): void {
         global $twig;
 
         if (!isset($_GET["slug"])) {
-            return $this->redirectError();
+            $this->redirectError();
+            return;
         }
 
         $article = Articles::getArticle($_GET["slug"]);

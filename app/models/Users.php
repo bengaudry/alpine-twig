@@ -70,4 +70,24 @@ class Users {
         }
     }
 
+    public static function delete(string $userId) {
+        if (!isset($userId)) return;
+        try {
+            $db = Database::getInstance()->getConnection();
+            $stmt = $db->prepare(<<<SQL
+                DELETE FROM utilisateurs 
+                WHERE id = :id
+            SQL);
+            $stmt->bindParam(":id", $userId);
+            $stmt->execute();
+
+            Logger::getInstance()->log(
+                "Suppression de l'utilisateur d'id " . $userId
+            );
+        } catch (PDOException $e) {
+            error_log($e);
+            return;
+        }
+    }
+
 }

@@ -39,11 +39,6 @@ class SessionManager
             && isset($_SESSION['email']);
     }
 
-    public function isAdmin(): bool
-    {
-        return Roles::isAdmin($_SESSION['user_id']);
-    }
-
     public function destroy(): void
     {
         session_unset();

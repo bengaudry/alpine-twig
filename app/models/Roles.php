@@ -34,19 +34,42 @@ class Roles
                 SELECT 
                     RU.role_id
                 FROM utilisateurs U
-                INNER JOIN role_user RU ON RU.user_id = U.id
+                LEFT JOIN role_user RU ON RU.user_id = U.id
                 WHERE U.id = :id
             SQL);
             $stmt->bindParam(":id", $userId);
             $stmt->execute();
             $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            return is_array($data['role_id'])
-                ? in_array(1, $data['role_id'])
-                : $data['role_id'] == 1;
+            if (is_array($data['role_id'])) {
+                return in_array(1, $data['role_id']);
+            }
+            return $data['role_id'] == 1;
         } catch (PDOException $e) {
             error_log($e);
             return false;
+        }
+    }
+
+    /**
+     * Retourne les rôles d'un utilisateur
+     */
+    public static function getUserRoles(string $userId) {
+        if (!isset($userId)) return null;
+        try {
+            $db = Database::getInstance()->getConnection();
+            $stmt = $db->prepare(<<<SQL
+                SELECT role_id
+                FROM role_user
+                WHERE user_id = :id
+            SQL);
+            $stmt->bindParam(":id", $userId);
+            $stmt->execute();
+            $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return array_values($data ?? []);
+        } catch (PDOException $e) {
+            Logger::getInstance()->log($e);
+            return [];
         }
     }
 
@@ -56,11 +79,12 @@ class Roles
     public static function toggleUserRole(string $userId, string $roleId): bool {
         if (!isset($userId) || !isset($roleId)) return false;
         try {
+            error_log("Toggle role {$roleId} for user {$userId}");
             $db = Database::getInstance()->getConnection();
 
             // On récupère dans la base de données si l'utilisateur a déjà ce rôle
             $stmt = $db->prepare(<<<SQL
-                SELECT role_id 
+                SELECT role_id, user_id 
                 FROM role_user
                 WHERE user_id = :user_id AND role_id = :role_id
             SQL);
@@ -72,6 +96,7 @@ class Roles
             error_log(json_encode($existingRole));
 
             if ($existingRole) {
+                error_log("Rôle existant, suppression...");
                 // Le rôle existe déjà, on le supprime
                 $stmt = $db->prepare(<<<SQL
                     DELETE FROM role_user
@@ -79,6 +104,7 @@ class Roles
                 SQL);
                 Logger::getInstance()->log("Suppression du rôle {$roleId} pour l'utilisateur {$userId}");
             } else {
+                error_log("Rôle non existant, ajout...");
                 // Le rôle n'existe pas, on l'ajoute
                 $stmt = $db->prepare(<<<SQL
                     INSERT INTO role_user (user_id, role_id)

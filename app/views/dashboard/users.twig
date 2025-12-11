@@ -1,6 +1,5 @@
 <h1>{{ pages['users'] }}</h1>
 
-<form action="" method="POST">
 
 <table class="table">
     <thead>
@@ -16,6 +15,7 @@
     <tbody>
     {% for user in data['users'] %}
         <tr>
+<form action="" method="POST">
                 <input type="hidden" name="users:user-id" value="{{ user.id }}">
                 <th scope="row">{{ user.id }}</th>
                 <td>{{ user.nom_utilisateur }}</td>
@@ -28,21 +28,25 @@
                                    onchange="this.form.submit()" {{ role.nom_role in user.roles ? "checked" }}
                                     class="form-check-input"
                             />
-                            <label class="form-check-label">{{ role.nom_role }}</label>
+                            <label class="form-check-label">{{ role.nom_role }} ({{ role.id }})</label>
                         </div>
                     {% endfor %}
                 </td>
                 <td>
                     <button name="users:toggle-activation" value="{{ user.id }}"
-                            class="btn {{ user.est_actif == 1 ? 'btn-danger'
+                            class="btn {{ user.est_actif == 1 ? 'btn-warning'
                             : 'btn-success' }}"
                     >
                         {{ user.est_actif ? 'Désactiver' : 'Activer' }}
                     </button>
+                    <button name="users:delete-user" value="{{ user.id }}"
+                            class="btn btn-danger">
+                        Supprimer
+                    </button>
                 </td>
+</form>
         </tr>
     {% endfor %}
     </tbody>
 </table>
 
-</form>

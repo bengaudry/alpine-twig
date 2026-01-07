@@ -1,1 +1,28 @@
 <h1>{{ pages['stats'] }}</h1>
+
+<div class="container text-center">
+    <div class="row">
+        <div class="col col-sm card">
+            <div class="card-body">
+                <h5 class="card-title">Utilisateurs actifs</h5>
+                <p class="card-text">{{ data['totalUsers'] }}</p>
+            </div>
+        </div>
+
+
+        <div class="col col-sm card">
+            <div class="card-body">
+                <h5 class="card-title">Articles publiés</h5>
+                <p class="card-text">{{ data['publishedArticles'] }}</p>
+            </div>
+        </div>
+
+
+        <div class="col col-sm card">
+            <div class="card-body">
+                <h5 class="card-title">Commentaires en attente</h5>
+                <p class="card-text">{{ data['awaitingComments'] }}</p>
+            </div>
+        </div>
+    </div>
+</div>

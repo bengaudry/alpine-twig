@@ -1,6 +1,7 @@
 <?php
 
 require_once 'db/Database.php';
+require_once 'lib/Logger.php';
 
 class Articles {
 
@@ -21,7 +22,7 @@ class Articles {
       $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
       return ["articles" => $articles];
     } catch (PDOException $e) {
-      error_log($e);
+      Logger::getInstance()->log($e);
       return ["articles" => []];
     }
   }
@@ -39,7 +40,7 @@ class Articles {
       $result = $stmt->fetch(PDO::FETCH_ASSOC);
       return $result['total'] ?? 0;
     } catch (PDOException $e) {
-      error_log($e);
+      Logger::getInstance()->log($e);
       return 0;
     }
   }
@@ -63,7 +64,7 @@ class Articles {
       $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
       return ["articles" => $articles];
     } catch (PDOException $e) {
-      error_log($e);
+      Logger::getInstance()->log($e);
       return ["articles" => []];
     }
   }
@@ -89,7 +90,7 @@ class Articles {
       $article = $stmt->fetch(PDO::FETCH_ASSOC);
       return $article;
     } catch (PDOException $e) {
-      error_log($e);
+      Logger::getInstance()->log($e);
       return null;
     }
   }
@@ -106,9 +107,10 @@ class Articles {
         WHERE id = :id
       SQL);
       $stmt->bindParam(":id", $articleId);
+      Logger::getInstance()->log("Suppression de l'article {$articleId}");
       return $stmt->execute();
     } catch (PDOException $e) {
-      error_log($e);
+      Logger::getInstance()->log($e);
       return false;
     }
   }
@@ -133,9 +135,10 @@ class Articles {
       SQL);
       $stmt->bindParam(":status", $status);
       $stmt->bindParam(":id", $articleId);
+      Logger::getInstance()->log("Changement du statut de l'article {$articleId} à {$status}");
       return $stmt->execute();
     } catch (PDOException $e) {
-      error_log($e);
+      Logger::getInstance()->log($e);
       return false;
     }
   }

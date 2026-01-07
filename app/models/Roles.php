@@ -18,7 +18,7 @@ class Roles
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            error_log($e);
+            Logger::getInstance()->log(message: $e);
             return [];
         }
     }
@@ -46,7 +46,7 @@ class Roles
             }
             return $data['role_id'] == 1;
         } catch (PDOException $e) {
-            error_log($e);
+            Logger::getInstance()->log($e);
             return false;
         }
     }
@@ -79,7 +79,6 @@ class Roles
     public static function toggleUserRole(string $userId, string $roleId): bool {
         if (!isset($userId) || !isset($roleId)) return false;
         try {
-            error_log("Toggle role {$roleId} for user {$userId}");
             $db = Database::getInstance()->getConnection();
 
             // On récupère dans la base de données si l'utilisateur a déjà ce rôle
@@ -93,24 +92,20 @@ class Roles
             $stmt->execute();
             $existingRole = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            error_log(json_encode($existingRole));
-
             if ($existingRole) {
-                error_log("Rôle existant, suppression...");
                 // Le rôle existe déjà, on le supprime
                 $stmt = $db->prepare(<<<SQL
                     DELETE FROM role_user
                     WHERE user_id = :user_id AND role_id = :role_id
                 SQL);
-                Logger::getInstance()->log("Suppression du rôle {$roleId} pour l'utilisateur {$userId}");
+                Logger::getInstance()->log("Ajout du rôle {$roleId} pour l'utilisateur {$userId}");
             } else {
-                error_log("Rôle non existant, ajout...");
                 // Le rôle n'existe pas, on l'ajoute
                 $stmt = $db->prepare(<<<SQL
                     INSERT INTO role_user (user_id, role_id)
                     VALUES (:user_id, :role_id)
                 SQL);
-                Logger::getInstance()->log("Ajout du rôle {$roleId} pour l'utilisateur {$userId}");
+                Logger::getInstance()->log("Suppression du rôle {$roleId} pour l'utilisateur {$userId}");
             }
 
             $stmt->bindParam(":user_id", $userId);
@@ -120,7 +115,7 @@ class Roles
 
             return $stmt->execute();
         } catch (PDOException $e) {
-            error_log($e);
+            Logger::getInstance()->log( $e);
             return false;
         }
     }

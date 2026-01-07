@@ -28,7 +28,7 @@ class Users {
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            error_log($e);
+            Logger::getInstance()->log($e);
             return null;
         }
     }
@@ -46,7 +46,7 @@ class Users {
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
             return $result['total'] ?? 0;
         } catch (PDOException $e) {
-            error_log($e);
+            Logger::getInstance()->log($e);
             return 0;
         }
     }
@@ -78,12 +78,12 @@ class Users {
             $stmt->bindParam(":id", $userId);
             $stmt->execute();
 
-            Logger::getInstance()->log(
-                "Changement du statut d'activation de l'utilisateur d'id "
-                . $userId . " à : " . strval($newActiveState)
+            Logger::getInstance()->log($newActiveState == 1
+                ? "Activation de l'utilisateur {$userId}"
+                : "Désactivation de l'utilisateur {$userId}"
             );
         } catch (PDOException $e) {
-            error_log($e);
+            Logger::getInstance()->log($e);
             return;
         }
     }
@@ -103,7 +103,7 @@ class Users {
                 "Suppression de l'utilisateur d'id " . $userId
             );
         } catch (PDOException $e) {
-            error_log($e);
+            Logger::getInstance()->log($e);
             return;
         }
     }

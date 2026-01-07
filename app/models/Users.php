@@ -34,6 +34,24 @@ class Users {
     }
 
 
+    public static function countAll() {
+        try {
+            $db = Database::getInstance()->getConnection();
+            $stmt = $db->prepare(<<<SQL
+                SELECT COUNT(*) AS total
+                FROM utilisateurs U
+                WHERE U.est_actif = 1
+            SQL);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result['total'] ?? 0;
+        } catch (PDOException $e) {
+            error_log($e);
+            return 0;
+        }
+    }
+
+
     /**
      * Active un utilisateur si il est désactivé et vice-versa
      */

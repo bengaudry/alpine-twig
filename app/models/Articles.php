@@ -25,6 +25,24 @@ class Articles {
       return ["articles" => []];
     }
   }
+
+
+  public static function countPublishedArticles(): int {
+    try  {
+      $db = Database::getInstance()->getConnection();
+      $stmt = $db->prepare(<<<SQL
+        SELECT COUNT(*) as total
+        FROM articles
+        WHERE statut = 'Publié'
+      SQL);
+      $stmt->execute();
+      $result = $stmt->fetch(PDO::FETCH_ASSOC);
+      return $result['total'] ?? 0;
+    } catch (PDOException $e) {
+      error_log($e);
+      return 0;
+    }
+  }
   
   
   /**

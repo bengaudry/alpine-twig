@@ -114,6 +114,13 @@ class DashboardController {
 
     private function fetchData(string $view) {
         switch ($view) {
+            case 'stats':
+                return [
+                    'totalUsers' => json_encode(Users::countAll()),
+                    'publishedArticles' => Articles::countPublishedArticles(),
+                    'awaitingComments' => 0
+                ];
+
             case 'users':
                 return ['users' => Users::getAll(), 'roles' => Roles::getAll()];
 

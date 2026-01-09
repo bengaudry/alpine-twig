@@ -1,0 +1,22 @@
+body.dyslexic {
+    font-size: 1.2em;            
+    line-height: 1.8;
+    letter-spacing: 0.08em;
+    word-spacing: 0.16em;
+}
+
+body.dyslexic p,
+body.dyslexic li,
+body.dyslexic a,
+body.dyslexic label {
+    font-size: 1.1em;
+}
+
+body.dyslexic {
+    font-family: "OpenDyslexic", Arial, sans-serif;
+}
+
+body.dyslexic {
+    background-color: #fdfdfd;
+    color: #222;
+}

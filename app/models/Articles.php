@@ -72,27 +72,35 @@ class Articles {
   /**
    * Récupère les détails d'un article spécifique
    */
-  public static function getArticle(string $slug) {
-    try  {
-      $db = Database::getInstance()->getConnection();
-      $stmt = $db->prepare(<<<SQL
-        SELECT
-          A.image_une, A.titre, A.date_creation, A.contenu,
-          U.nom_utilisateur
-        FROM articles A
-        INNER JOIN utilisateurs U ON U.id = A.utilisateur_id
-        WHERE slug = :slug
-        LIMIT 1
-      SQL);
-      $stmt->bindParam(":slug", $slug);
-      $stmt->execute();
-      $article = $stmt->fetch(PDO::FETCH_ASSOC);
-      return $article;
-    } catch (PDOException $e) {
-      error_log($e);
-      return null;
-    }
+public static function getArticle(string $slug) {
+  try {
+    $db = Database::getInstance()->getConnection();
+    $stmt = $db->prepare(<<<SQL
+      SELECT
+        A.id,
+        A.image_une,
+        A.titre,
+        A.date_creation,
+        A.contenu,
+        U.nom_utilisateur
+      FROM articles A
+      INNER JOIN utilisateurs U ON U.id = A.utilisateur_id
+      WHERE A.slug = :slug
+        AND A.statut = 'Publié'
+      LIMIT 1
+    SQL);
+
+    $stmt->bindParam(":slug", $slug);
+    $stmt->execute();
+
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+
+  } catch (PDOException $e) {
+    error_log($e);
+    return null;
   }
+}
+
 
 
   /**

@@ -63,7 +63,7 @@ class Tags {
             SQL);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    public static function genrateSlug(string $string): string {
+    public static function generateSlug(string $string): string {
         $slug = strtolower(trim($string));
         $slug = preg_replace('/[^a-z0-9]+/', '-', $slug);
         $slug = preg_replace('/-+/', '-', $slug);

@@ -1,85 +1,72 @@
 <?php
 
 class Tags {
+    public static function findAll(PDO $pdo): array
+    {
+        $db = Database::getInstance()->getConnection();
+        $stmt = $db->prepare(<<<SQL
+            SELECT * FROM tags ORDER BY nom_tags ASC;
+            SQL);
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+    public static function find(PDO $pdo, int $id): ?array {
+        $db = Database::getInstance()->getConnection();
+        $stmt = $db->prepare(<<<SQL
+            SELECT * FROM tags WHERE id = :id
+            SQL);
+        $stmt->execute(['id' => $id]);
 
-    private string $nom_tags;
-    private string $slug;
-    private ?int $id = null;
-    public function __construct(string $nom_tags, $slug, ?int $id = null) {
-        $this->nom_tags = $nom_tags;
-        $this->slug = $slug;
-        $this->id = $id;
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result;
     }
-    public function getNomTags(): string {
-        return $this->nom_tags;
+
+    public static function create(PDO $pdo, string $nomTag, ?string $slug = null): ?int {
+        if ($slug === null) {
+            $slug = self::generateSlug($nomTag);
+        }
+        $db = Database::getInstance()->getConnection();
+        $stmt = $db->prepare(<<<SQL
+            INSERT INTO Tags (nom_tag, slug) VALUES (:nom, :slug)
+            SQL);
+        try {
+            $success = $stmt->execute([
+                'nom' => $nomTag,
+                'slug' => $slug
+            ]);
+
+            return $success ? (int)$pdo->lastInsertId() : false;
+        } catch (PDOException $e) {
+            return null;
+        }
     }
-    public function getSlug(): string {
-        return $this->slug;
+    public static function update(PDO $pdo, int $id, string $nomTag, ?string $slug = null): bool {
+        if ($slug === null) {
+            $slug = self::generateSlug($nomTag);
+        }
+        $db = Database::getInstance()->getConnection();
+        $stmt = $db->prepare(<<<SQL
+            UPDATE Tags SET nom_tag = :nom, slug = :slug WHERE id = :id
+            SQL);
+        return $stmt->execute([
+            'nom' => $nomTag,
+            'slug' => $slug,
+            'id' => $id
+        ]);
     }
-    public function getId(): ?int {
-        return $this->id;
+
+    public static function delete(PDO $pdo): array {
+        $db = Database::getInstance()->getConnection();
+        $stmt = $db->prepare(<<<SQL
+            DELETE FROM Tags WHERE id = :id
+            SQL);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    public function setNomTags(string $nom_tags): void {
-        $this->nom_tags = $nom_tags;
-        $this->slug = self::generateSlug($nom_tags);
-    }
-    private static function generateSlug(string $nom_tags): string {
-        $slug = strtolower(trim($nom_tags));
+    public static function genrateSlug(string $string): string {
+        $slug = strtolower(trim($string));
         $slug = preg_replace('/[^a-z0-9]+/', '-', $slug);
         $slug = preg_replace('/-+/', '-', $slug);
         return trim($slug, '-');
-    }
-    public static function findAll(PDO $pdo): array
-    {
-        $sql = 'SELECT * FROM tags ORDER BY nom_tag DESC';
-        $stmt = $pdo->query($sql);
-        $tags = [];
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $tags[] = new Tags($row['nom_tag'], $row['slug'], $row['id']);
-        }
-        return $tags;
-    }
-    public static function find(PDO $pdo, int $id): ?Tags {
-        $sql = 'SELECT * FROM tags WHERE id = :id';
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute(['id' => $id]);
-
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        if ($row){
-            return new Tags($row['nom_tag'], $row['slug'], $row['id']);
-        }
-        return null;
-    }
-    public function save(PDO $pdo): bool {
-        if ($this->id == null) {
-            $sql = 'INSERT INTO tags (nom_tag, slug) VALUES (:nom_tag, :slug)';
-            $stmt = $pdo->prepare($sql);
-            $res = $stmt->execute([
-                'nom_tag' => $this->nom_tags,
-                'slug' => $this->slug
-            ]);
-            if ($res) {
-                $this->id = (int)$pdo->lastInsertId();
-                return true;
-            }
-        }
-        else {
-            $sql = 'UPDATE tags SET nom_tag = :nom_tag, slug = :slug WHERE id = :id';
-            $stmt = $pdo->prepare($sql);
-            return $stmt->execute([
-                'nom_tag' => $this->nom_tags,
-                'slug' => $this->slug,
-                'id' => $this->id
-            ]);
-        }
-        return false;
-    }
-    public function delete(PDO $pdo): bool {
-        if ($this->id == null) {
-            return false;
-        }
-        $sql = 'DELETE FROM tags WHERE id = :id';
-        $stmt = $pdo->prepare($sql);
-        return $stmt->execute(['id' => $this->id]);
     }
 }

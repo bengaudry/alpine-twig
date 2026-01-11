@@ -208,7 +208,7 @@ INSERT INTO `Article_Tag` (`article_id`, `tag_id`) VALUES
 
 -- Commentaires
 INSERT INTO `Commentaires` (`article_id`, `nom_auteur`, `email_auteur`, `contenu`, `statut`) VALUES
-(1, 'Nicolas Rider', 'nic@trail.fr', 'Super article, je connaissais pas la piste de l\'Écureuil ! J\'y vais ce
-weekend.', 'Approuvé'),
+(2, 'ProXC', 'pro@xc.com', 'J\'utilise le même SAG, c\'est le meilleur compromis !', 'Approuvé');
 (1, 'Anonyme', NULL, 'Trop de monde sur ces pistes, dommage...', 'En attente'),
 (2, 'ProXC', 'pro@xc.com', 'J\'utilise le même SAG, c\'est le meilleur compromis !', 'Approuvé');
+(1, 'Daniel Caille', 'daniel.caille@mail.com', 'J utilise les mêmes traces ', 'Approuvé');

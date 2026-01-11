@@ -94,6 +94,8 @@ class Articles {
       return null;
     }
   }
+}
+
 
 
   /**

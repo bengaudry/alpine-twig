@@ -72,7 +72,7 @@ class Articles {
 
 
   /**
-   * Récupère les détails d'un article spécifique
+   * Récupère les détails d'un article de statut publié spécifique
    */
   public static function getArticle(string $slug) {
     try {
@@ -105,6 +105,39 @@ class Articles {
 
 
 
+  /**
+   * Récupère les détails d'un article spécifique
+   */
+  public static function getArticleFromId(int $id) {
+    try {
+      $db = Database::getInstance()->getConnection();
+      $stmt = $db->prepare(<<<SQL
+        SELECT
+          A.id,
+          A.image_une,
+          A.titre,
+          A.date_creation,
+          A.contenu,
+          A.statut,
+          U.nom_utilisateur
+        FROM articles A
+        INNER JOIN utilisateurs U ON U.id = A.utilisateur_id
+        WHERE A.id = :id
+        LIMIT 1
+      SQL);
+
+      $stmt->bindParam(":id", $id);
+      $stmt->execute();
+
+      return $stmt->fetch(PDO::FETCH_ASSOC);
+
+    } catch (PDOException $e) {
+      Logger::getInstance()->log($e);
+      return null;
+    }
+  }
+
+
 
   /**
    * Supprime un article de la BDD
@@ -123,6 +156,28 @@ class Articles {
       Logger::getInstance()->log($e);
       return false;
     }
+  }
+
+
+  public static function createArticle(string $titre, string $slug, string $contenu, string $statut): int {
+      try {
+          $db = Database::getInstance()->getConnection();
+          $stmt = $db->prepare(<<<SQL
+            INSERT INTO articles (titre, slug, contenu, statut, date_creation, date_mise_a_jour, utilisateur_id)
+            VALUES (:titre, :slug, :contenu, :statut, NOW(), NOW(), 1)
+          SQL);
+          $stmt->execute([
+              'titre' => $titre,
+              'slug' => $slug,
+              'contenu' => $contenu,
+              'statut' => $statut
+          ]);
+          Logger::getInstance()->log("Création de l'article {$titre}");
+          return (int)$db->lastInsertId();
+      } catch (PDOException $e) {
+          Logger::getInstance()->log($e);
+          return -1;
+      }
   }
 
 
@@ -181,13 +236,13 @@ class Articles {
   public static function synchroTags(int $articleId, array $tagsIDs): void {
       $db = Database::getInstance()->getConnection();
       $stmt = $db->prepare(<<<SQL
-        DELETE FROM Articles_Tags WHERE article_id = :articleId
+        DELETE FROM Article_Tag WHERE article_id = :articleId
         SQL);
       $stmt->execute(['articleId' => $articleId]);
 
       if (!empty($tagsIDs)) {
           $stmt = $db->prepare(<<<SQL
-            INSERT INTO Articles_Tags (article_id, tag_id) VALUES (:articleId, :tagId)
+            INSERT INTO Article_Tag (article_id, tag_id) VALUES (:articleId, :tagId)
             SQL);
           foreach ($tagsIDs as $tagId) {
               $stmt->execute(['articleId' => $articleId, 'tagId' => $tagId]);

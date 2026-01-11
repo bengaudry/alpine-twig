@@ -6,6 +6,7 @@ require_once 'lib/SessionManager.php';
 
 require_once 'app/controllers/IndexController.php';
 require_once 'app/controllers/ArticlesController.php';
+require_once 'app/controllers/ArticleEditorController.php';
 require_once 'app/controllers/RegisterController.php';
 require_once 'app/controllers/SigninController.php';
 require_once 'app/controllers/ProfileController.php';
@@ -48,6 +49,11 @@ switch ($path) {
         $title = "Tableau de bord";
         break;
 
+    case '/edit-article':
+        $controller = new ArticleEditorController();
+        $title = "Édition d'article";
+        break;
+
     default:
         $controller = new NotFoundController();
         $title = "Erreur 404";
@@ -56,13 +62,20 @@ switch ($path) {
 
 $session = SessionManager::getInstance();
 
-// Start output buffering to allow headers to be sent from controllers
+// Output buffering pour éviter les problèmes d'en-têtes déjà envoyés
 ob_start();
 
-echo $twig->render("Head.twig", ["title" => $title]);
+error_log(Permissions::canCreateArticle($session->get('user_id')) ? "Can create articles" : "Cannot create articles");
+echo $twig->render("Head.twig", [
+    "title" => $title,
+]);
 echo $twig->render(
     "Navbar.twig", 
-    ["path" => $path, "isSignedIn" => $session->isSignedIn()]
+    [
+        "path" => $path, 
+        "isSignedIn" => $session->isSignedIn(),
+        "canCreateArticles" => Permissions::canCreateArticle($session->get('user_id'))
+    ]
 );
 $controller->index();
 echo $twig->render("Footer.twig");

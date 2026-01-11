@@ -19,11 +19,15 @@ class Tags {
     public static function find(int $id): ?array {
         $db = Database::getInstance()->getConnection();
         $stmt = $db->prepare(<<<SQL
-            SELECT * FROM tags WHERE id = :id
+            SELECT T.id, T.nom_tag, T.slug
+            FROM Tags T 
+            LEFT JOIN Article_Tag AT ON T.id = AT.tag_id
+            WHERE AT.article_id = :id
+            GROUP BY T.id
             SQL);
         $stmt->execute(['id' => $id]);
 
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
 

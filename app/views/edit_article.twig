@@ -1,20 +1,14 @@
-{% extends "layout.twig" %}
-{% block title %}Editer l'article{% endblock %}
-
-{% block content %}
 <div class="container mt-5">
+    {% if isCreation %}
+    <h1>Ecrire un article</h1>
+    {% else %}
     <h1>Editer l'article</h1>
-    {% if error %}
-        <div class="alert alert-danger">{{ error }}</div>
-    {% endif %}
-    {% if success %}
-     <div class="alert alert-success">{{ sucess }}</div>
     {% endif %}
 
     <form method="POST" action="">
         <div class="mb-3">
-            <label for="title" class="form-label">Titre</label>
-            <input type="text" class="form-control" id="title" name="title" value="{{ article.title }}" required>
+            <label for="titre" class="form-label">Titre</label>
+            <input type="text" class="form-control" id="titre" name="titre" value="{{ article.titre }}" required>
         </div>
         <div class="mb-3">
             <label for="contenu" class="form-label">Contenu</label>
@@ -25,24 +19,22 @@
                 <label for="statut" class="form-label">Statut</label>
                 <select class="form-select" id="statut" name="statut">
                     <option value="Brouillon" {% if article.statut == "Brouillon" %}selected{% endif %}>Brouillon</option>
-                    <option value="Publie" {% if article.statut == 'Publie' %}selected{% endif %}>Publie</option>
-                    <option value="Archive" {% if article.statut == 'Archive' %}selected{% endif %}>Archive</option>
+                    <option value="Publie" {% if article.statut == 'Publié' %}selected{% endif %}>Publié</option>
+                    <option value="Archive" {% if article.statut == 'Archivé' %}selected{% endif %}>Archivé</option>
                 </select>
             </div>
 
             <div class="col-md-6 mb-3">
-                <label class="form-label">Tags associes</label>
-                <div class="card p-3" style="max-height: 200px; overflow-y: auto;">
+                <label class="form-label">Tags associés</label>
+                <small>(Maintenir CTRL pour sélectionner plusieurs options)</small>
+                <select name="tags[]" multiple class="form-select">
                     {% for tag in allTags %}
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="tags[]" value="{{ tag.id }}" id="tag_{{ tag.id }}"
-                                    {% if tag.id in currentTagIds %}checked{% endif %}>
-                            <label class="form-check-label" for="tag_{{ tag.id }}">
-                                {{ tag.nom_tag }}
-                            </label>
-                        </div>
+                        <option
+                            value="{{ tag.id }}" 
+                            {% if tag.id in curTagsId %}selected{% endif %}
+                        >{{ tag.nom_tag }}</option>
                     {% endfor %}
-                </div>
+                </select>
             </div>
         </div>
         <div class="mt-4">
@@ -51,4 +43,3 @@
         </div>
     </form>
 </div>
-{% endblock %}

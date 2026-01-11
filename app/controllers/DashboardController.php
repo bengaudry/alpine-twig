@@ -20,7 +20,7 @@ class DashboardController {
 
         // Gestion des actions POST
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $view = $this->handlePostActions($session);
+            $view = $this->handlePostActions();
         }
 
         echo $twig->render(
@@ -101,7 +101,9 @@ class DashboardController {
             case 'articles':
                 return [
                     'articles' => Articles::getAllArticles(),
-                    'canDeleteArticles' => Permissions::canDeleteArticle(SessionManager::getInstance()->get('user_id'))
+                    'canDeleteArticles' => Permissions::canDeleteArticle(SessionManager::getInstance()->get('user_id')),
+                    'canEditAllArticles' => Permissions::canEditAllArticles(SessionManager::getInstance()->get('user_id')),
+                    'canPublishArticles' => Permissions::canPublishArticle(SessionManager::getInstance()->get('user_id'))
                 ];
 
             case 'comments':
@@ -120,6 +122,10 @@ class DashboardController {
         $session = SessionManager::getInstance();
 
         // Gestion des articles
+        if (isset($_POST["articles:edit"]) && Permissions::canEditAllArticles($session->get('user_id'))) {
+            header("Location: /edit-article?id=" . $_POST['articles:edit']);
+            exit;
+        }
         if (isset($_POST["articles:delete"]) && Permissions::canDeleteArticle($session->get('user_id'))) {
             Articles::deleteArticle($_POST['articles:delete']);
             return "articles";

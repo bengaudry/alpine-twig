@@ -169,4 +169,29 @@ class Articles {
     return Articles::changeArticleStatus($articleId, "Publié");
   }
 
+  public static function updateArticle(int $id, string $titre, string $slug, string $contenu, string $statut): bool {
+      $db = Database::getInstance()->getConnection();
+      $stmt = $db->prepare(<<<SQL
+        UPDATE articles
+        SET titre = :titre, slug = :slug, contenu = :contenu, statut = :statut, date_mise_a_jour = NOW()
+        WHERE id = :id 
+        SQL);
+      return $stmt->execute(['titre' => $titre, 'slug' => $slug, 'contenu' => $contenu, 'statut' => $statut, 'id' => $id]);
+  }
+  public static function synchroTags(int $articleId, array $tagsIDs): void {
+      $db = Database::getInstance()->getConnection();
+      $stmt = $db->prepare(<<<SQL
+        DELETE FROM Articles_Tags WHERE article_id = :articleId
+        SQL);
+      $stmt->execute(['articleId' => $articleId]);
+
+      if (!empty($tagsIDs)) {
+          $stmt = $db->prepare(<<<SQL
+            INSERT INTO Articles_Tags (article_id, tag_id) VALUES (:articleId, :tagId)
+            SQL);
+          foreach ($tagsIDs as $tagId) {
+              $stmt->execute(['articleId' => $articleId, 'tagId' => $tagId]);
+          }
+      }
+  }
 }

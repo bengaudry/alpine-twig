@@ -90,4 +90,19 @@ class Comments {
             error_log($e);
         }
     }
+
+
+    public static function deleteComment(int $commentId): void {
+        try {
+            $db = Database::getInstance()->getConnection();
+            $stmt = $db->prepare("
+                DELETE FROM Commentaires
+                WHERE id = :commentId
+            ");
+            $stmt->bindParam(':commentId', $commentId, PDO::PARAM_INT);
+            $stmt->execute();
+        } catch (PDOException $e) {
+            error_log($e);
+        }
+    }
 }

@@ -149,6 +149,10 @@ class DashboardController {
             Comments::rejectComment($_POST['comments:reject']);
             return "comments";
         }
+        if (isset($_POST["comments:delete"]) && Permissions::canManageComments($session->get('user_id'))) {
+            Comments::deleteComment($_POST['comments:delete']);
+            return "comments";
+        }
         return $_GET['view'];
     }
 }

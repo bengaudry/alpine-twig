@@ -139,4 +139,11 @@ body.dark .theme-toggle {
   color: #fff !important;
 }
 
-
+.separator {
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: #888;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}

@@ -91,12 +91,12 @@ class Articles {
           AND A.statut = 'Publié'
         LIMIT 1
       SQL);
-  
+
       $stmt->bindParam(":slug", $slug);
       $stmt->execute();
-  
+
       return $stmt->fetch(PDO::FETCH_ASSOC);
-  
+
     } catch (PDOException $e) {
       Logger::getInstance()->log($e);
       return null;

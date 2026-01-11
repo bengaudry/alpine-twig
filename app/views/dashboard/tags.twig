@@ -1,64 +1,37 @@
 <h1>{{ pages['tags'] }}</h1>
 
+<form action="/dashboard?view=tags" method="POST">
+  <h3>Créer un tag</h3>
+  <div class="form-group" style="max-width: 350px;">
+    <label for="new_tag_name">Nom du tag</label>
+    <input type="text" id="new_tag_name" name="new_tag_name" placeholder="Nom du tag" class="form-control" />
+    <button type="submit" name="tags:create" class="btn btn-primary">Créer un tag</button>
+  </div>
+</form>
 
-<form action="/dashboard?view=comments" method="POST">
+<span class="separator"></span>
+
+<form action="/dashboard?view=tags" method="POST">
   <table class="table">
     <thead>
       <tr>
         <th scope="col">#</th>
-        <th scope="col">Article</th>
-        <th scope="col">Auteur</th>
-        <th scope="col">Contenu</th>
-        <th scope="col">Date</th>
-        <th scope="col">Statut</th>
+        <th scope="col">Nom</th>
+        <th scope="col">Slug</th>
+        <th scope="col">Articles associés</th>
         <th scope="col">Actions</th>
       </tr>
     </thead>
 
     <tbody>
-      {% for comment in data.comments %}
+      {% for tag in data.tags %}
       <tr>
-        <th scope="row">{{comment.id}}</th>
+        <th scope="row">{{tag.id}}</th>
+        <td>{{tag.nom_tag}}</td>
+        <td>{{tag.slug}}</td>
+        <td>{{tag.nb_articles}}</td>
         <td>
-          ({{ comment.article_id }})
-          <a href="/article?slug={{ comment.article_slug }}">{{comment.article_titre}}</a>
-        </td>
-        <td>
-          {{comment.nom_auteur}}
-          {% if comment.email_auteur %}
-          (<a href="mailto:{{ comment.email_auteur }}">{{ comment.email_auteur }}</a>)
-          {% endif %}
-        </td>
-        <td>{{comment.contenu}}</td>
-        <td>{{comment.date}}</td>
-        <td>
-          <span class="badge {{
-            comment.statut == 'Approuvé' ? 'text-bg-success'
-            : comment.statut == 'Rejeté' ? 'text-bg-danger'
-            : 'text-bg-warning' }}"
-          >
-            {{comment.statut}}
-          </span>
-        </td>
-        <td>
-          {% if comment.statut != 'Rejeté' %}
-          <!-- Bouton rejeter -->
-          <button name="comments:reject" value="{{comment.id}}" class="btn btn-warning" title="Rejeter">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-ban" viewBox="0 0 16 16">
-              <path d="M15 8a6.97 6.97 0 0 0-1.71-4.584l-9.874 9.875A7 7 0 0 0 15 8M2.71 12.584l9.874-9.875a7 7 0 0 0-9.874 9.874ZM16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0"/>
-            </svg>
-          </button>
-          {% endif %}
-
-          {% if comment.statut != 'Approuvé' %}
-          <button name="comments:approve" value="{{ comment.id }}" class="btn btn-primary" title="Approuver">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
-              <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425z"/>
-            </svg>
-          </button>
-          {% endif %}
-
-          <button name="comments:delete" value="{{ comment.id }}" class="btn btn-danger" title="Supprimer">
+          <button name="tags:delete" value="{{ tag.id }}" class="btn btn-danger" title="Supprimer">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
               <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
               <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>

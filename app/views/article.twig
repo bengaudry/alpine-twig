@@ -11,6 +11,10 @@
       <p>
         <i>{{ article.date_creation|date("d/m/Y") }}</i>
       </p>
+
+      {% for tag in tags %}
+      <span class="badge text-bg-secondary">{{ tag.nom_tag }}</span>
+      {% endfor %}
     </header>
     
     <!-- Corps de l'article -->

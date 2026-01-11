@@ -6,6 +6,7 @@ require_once 'lib/SessionManager.php';
 require_once 'app/models/Users.php';
 require_once 'app/models/Articles.php';
 require_once 'app/models/Comments.php';
+require_once 'app/models/Tags.php';
 
 class DashboardController {
     public function index() {
@@ -105,7 +106,10 @@ class DashboardController {
 
             case 'comments':
                 return ['comments' => Comments::getAll()];
-                
+
+            case 'tags':
+                return ['tags' => Tags::findAll()];
+
             default:
                 return [];
         }
@@ -156,6 +160,18 @@ class DashboardController {
         if (isset($_POST["comments:delete"]) && Permissions::canManageComments($session->get('user_id'))) {
             Comments::deleteComment($_POST['comments:delete']);
             return "comments";
+        }
+
+
+        // Gestion des tags
+        if (isset($_POST["tags:create"]) && Permissions::canManageTags($session->get('user_id'))) {
+            error_log("Creating tag: " . $_POST['new_tag_name']);
+            Tags::create($_POST['new_tag_name']);
+            return "tags";
+        }
+        if (isset($_POST["tags:delete"]) && Permissions::canManageTags($session->get('user_id'))) {
+            Tags::delete((int)$_POST['tags:delete']);
+            return "tags";
         }
         return $_GET['view'];
     }

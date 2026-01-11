@@ -1,7 +1,7 @@
 <?php 
 
 require_once "app/models/Articles.php";
-require_once "app/models/Comment.php";
+require_once "app/models/Comments.php";
 require_once "lib/twig.php";
 
 class ArticlesController {

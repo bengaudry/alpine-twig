@@ -53,6 +53,10 @@ class DashboardController {
             $dashboardPages['comments'] = 'Gestion des commentaires';
         }
 
+        if (Permissions::canManageTags($user_id)) {
+            $dashboardPages['tags'] = 'Gestion des tags';
+        }
+
         return $dashboardPages;
     }
 

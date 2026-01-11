@@ -21,8 +21,6 @@ class ArticlesController {
             return;
         }
 
-        $comments = Comments::getByArticleId($article["id"]);
-
         echo $twig->render(
             "article.twig",
             [

@@ -116,7 +116,9 @@ class DashboardController {
     }
 
 
-    private function handlePostActions(SessionManager $session): string {
+    private function handlePostActions(): string {
+        $session = SessionManager::getInstance();
+
         // Gestion des articles
         if (isset($_POST["articles:delete"]) && Permissions::canDeleteArticle($session->get('user_id'))) {
             Articles::deleteArticle($_POST['articles:delete']);

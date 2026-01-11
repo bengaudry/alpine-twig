@@ -141,10 +141,22 @@ Gestion des permissions basée sur les rôles utilisateurs.
 
 Singleton qui gère les opérations sur `$_SESSION`.
 
+**Utilisation :**
+```php
+$session = SessionManager::getInstance();
+$user_id = $session->get("user_id");
+```
+
 
 ### 2. db/Database.php
 
 Singleton PDO pour les appels à la BD.
+
+**Utilisation :**
+```php
+$db = Database::getInstance()->getConnection();
+$db->prepare(...)
+```
 
 
 ### 3. lib/Logger.php

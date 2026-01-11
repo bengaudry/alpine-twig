@@ -21,13 +21,12 @@ class ArticlesController {
             return;
         }
 
-        $comments = Comments::getByArticleId($article["id"]);
-
         echo $twig->render(
             "article.twig",
             [
                 "article"  => $article,
-                "comments" => Comments::getByArticleId($article['id'])
+                "comments" => Comments::getByArticleId($article['id']),
+                "tags"     => Tags::getArticleTags()[$article['id']] ?? []
             ]
         );
     }

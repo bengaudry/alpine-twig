@@ -1,6 +1,7 @@
 <?php
 
 require_once 'db/Database.php';
+require_once 'lib/Logger.php';
 
 class Articles {
 
@@ -21,7 +22,7 @@ class Articles {
       $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
       return ["articles" => $articles];
     } catch (PDOException $e) {
-      error_log($e);
+      Logger::getInstance()->log($e);
       return ["articles" => []];
     }
   }
@@ -39,7 +40,7 @@ class Articles {
       $result = $stmt->fetch(PDO::FETCH_ASSOC);
       return $result['total'] ?? 0;
     } catch (PDOException $e) {
-      error_log($e);
+      Logger::getInstance()->log($e);
       return 0;
     }
   }
@@ -63,7 +64,7 @@ class Articles {
       $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
       return ["articles" => $articles];
     } catch (PDOException $e) {
-      error_log($e);
+      Logger::getInstance()->log($e);
       return ["articles" => []];
     }
   }
@@ -72,32 +73,26 @@ class Articles {
   /**
    * Récupère les détails d'un article spécifique
    */
-public static function getArticle(string $slug) {
-  try {
-    $db = Database::getInstance()->getConnection();
-    $stmt = $db->prepare(<<<SQL
-      SELECT
-        A.id,
-        A.image_une,
-        A.titre,
-        A.date_creation,
-        A.contenu,
-        U.nom_utilisateur
-      FROM articles A
-      INNER JOIN utilisateurs U ON U.id = A.utilisateur_id
-      WHERE A.slug = :slug
-        AND A.statut = 'Publié'
-      LIMIT 1
-    SQL);
-
-    $stmt->bindParam(":slug", $slug);
-    $stmt->execute();
-
-    return $stmt->fetch(PDO::FETCH_ASSOC);
-
-  } catch (PDOException $e) {
-    error_log($e);
-    return null;
+  public static function getArticle(string $slug) {
+    try  {
+      $db = Database::getInstance()->getConnection();
+      $stmt = $db->prepare(<<<SQL
+        SELECT
+          A.image_une, A.titre, A.date_creation, A.contenu,
+          U.nom_utilisateur
+        FROM articles A
+        INNER JOIN utilisateurs U ON U.id = A.utilisateur_id
+        WHERE slug = :slug
+        LIMIT 1
+      SQL);
+      $stmt->bindParam(":slug", $slug);
+      $stmt->execute();
+      $article = $stmt->fetch(PDO::FETCH_ASSOC);
+      return $article;
+    } catch (PDOException $e) {
+      Logger::getInstance()->log($e);
+      return null;
+    }
   }
 }
 
@@ -114,9 +109,10 @@ public static function getArticle(string $slug) {
         WHERE id = :id
       SQL);
       $stmt->bindParam(":id", $articleId);
+      Logger::getInstance()->log("Suppression de l'article {$articleId}");
       return $stmt->execute();
     } catch (PDOException $e) {
-      error_log($e);
+      Logger::getInstance()->log($e);
       return false;
     }
   }
@@ -141,9 +137,10 @@ public static function getArticle(string $slug) {
       SQL);
       $stmt->bindParam(":status", $status);
       $stmt->bindParam(":id", $articleId);
+      Logger::getInstance()->log("Changement du statut de l'article {$articleId} à {$status}");
       return $stmt->execute();
     } catch (PDOException $e) {
-      error_log($e);
+      Logger::getInstance()->log($e);
       return false;
     }
   }

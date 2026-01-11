@@ -11,7 +11,6 @@ class Logger
             ? realpath(__DIR__ . "\..") . "\app.log"
             : realpath(__DIR__ . "/..") . "/app.log";
 
-        error_log($this->logFile);
     }
 
     public static function getInstance()

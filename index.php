@@ -1,6 +1,7 @@
 <?php 
 
 require_once 'lib/twig.php';
+require_once 'lib/Logger.php';
 require_once 'lib/SessionManager.php';
 
 require_once 'app/controllers/IndexController.php';
@@ -12,6 +13,8 @@ require_once 'app/controllers/DashboardController.php';
 require_once 'app/controllers/NotFoundController.php';
 
 $path = strtok($_SERVER['REQUEST_URI'], '?');
+
+Logger::getInstance()->log("[{$_SERVER['REQUEST_METHOD']}] {$_SERVER['REQUEST_URI']}");
 
 $controller; $title;
 switch ($path) {

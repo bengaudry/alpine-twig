@@ -11,11 +11,34 @@
       <p>
         <i>{{ article.date_creation|date("d/m/Y") }}</i>
       </p>
+
+      {% for tag in tags %}
+      <span class="badge text-bg-secondary">{{ tag.nom_tag }}</span>
+      {% endfor %}
     </header>
     
     <!-- Corps de l'article -->
     <article>
       {{ article.contenu|markdown_to_html }}</p>
     </article>
+
+    <!-- Espace commentaires -->
+    <span class="separator"></span>
+    <h3>Commentaires</h3>
+
+    {% if comments is empty %}
+        <p>Aucun commentaire pour le moment.</p>
+    {% else %}
+        {% for comment in comments %}
+            <div class="comment mb-3">
+                <strong>{{ comment.username }}</strong>
+                <small class="text-muted">
+                    {{ comment.created_at|date("d/m/Y H:i") }}
+                </small>
+                <p>{{ comment.content }}</p>
+            </div>
+        {% endfor %}
+    {% endif %}
+
   {% endif %}
 </main>

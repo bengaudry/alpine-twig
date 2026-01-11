@@ -1,16 +1,17 @@
 <?php
 
+require_once 'lib/Logger.php';
+
 class Permissions
 {
     public static function userHasPermission(string $user_id, int $permission_id): bool {
         $user_roles = Roles::getUserRoles($user_id);
         if (!$user_roles) {
-            error_log("No roles found for user ID: $user_id");
+            Logger::getInstance()->log("No roles found for user ID: $user_id");
             return false;
         }
 
         foreach ($user_roles as $role) {
-            error_log(json_encode($role['role_id']));
             if (self::roleHasPermission($role['role_id'], $permission_id)) {
                 return true;
             }
@@ -30,8 +31,6 @@ class Permissions
             $stmt->bindParam(':permission_id', $permission_id);
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            error_log(json_encode($result));
 
             return $result !== false;
         } catch (PDOException $e) {

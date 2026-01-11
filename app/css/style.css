@@ -9,6 +9,16 @@ ul {
   list-style-type: none;
 }
 
+body {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+body > main {
+  flex: 1;
+}
+
 body.light {
   background: #fff;
   color: #000;
